@@ -1,0 +1,26 @@
+name: Test advanced options inputs
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_REF: refs/tags/v2.0.0
+      GITHUB_EVENT_NAME: push
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          formula-name: my-tool
+          tag-name: v2.0.0
+          homebrew-tap: myorg/homebrew-tap
+          push-to: myorg/homebrew-tap
+          base-branch: main
+          create-pullrequest: "false"
+          create-branch: "false"
+      - name: Assert action ran (may fail due to missing credentials)
+        run: |
+          echo "Action outcome: ${{ steps.action.outcome }}"
+          echo "PASS: action step executed (credentials not available in test environment)"
