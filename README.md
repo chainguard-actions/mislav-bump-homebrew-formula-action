@@ -8,6 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
+| v3.3 | [`v3.3`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.3) | [`ecd3ec7`](https://github.com/mislav/bump-homebrew-formula-action/commit/ecd3ec7bf4fa4ecbdaa0c379850187374d076eaa) |
 | v3.4 | [`v3.4`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.4) | [`8e2baa4`](https://github.com/mislav/bump-homebrew-formula-action/commit/8e2baa47daaa8db10fcdeb04105dfa6850eb0d68) |
 | v3.5 | [`v3.5`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.5) | [`37c544f`](https://github.com/mislav/bump-homebrew-formula-action/commit/37c544ffe02cc3f4eb1987db8fa63c96e0b37098) |
 | v3.6 | [`v3.6`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.6) | [`56a283f`](https://github.com/mislav/bump-homebrew-formula-action/commit/56a283fa15557e9abaa4bdb63b8212abc68e655c) |
