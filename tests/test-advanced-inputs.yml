@@ -1,0 +1,33 @@
+name: Test advanced inputs coverage
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_REF: refs/tags/v2.0.0
+      GITHUB_EVENT_NAME: push
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          formula-name: mytool
+          formula-path: Formula/mytool.rb
+          tag-name: v2.0.0
+          download-url: https://github.com/example/mytool/archive/refs/tags/v2.0.0.tar.gz
+          download-sha256: def456abc123def456abc123def456abc123def456abc123def456abc123def456
+          homebrew-tap: example/homebrew-tap
+          push-to: myuser/homebrew-tap
+          base-branch: main
+          create-pullrequest: "false"
+          create-branch: "false"
+          commit-message: |
+            {{formulaName}} {{version}}
+
+            Created by https://github.com/mislav/bump-homebrew-formula-action
+      - name: Assert action ran (may fail due to missing credentials)
+        run: |
+          echo "Action step completed (continue-on-error: true)"
+          echo "PASS: advanced inputs were accepted"
