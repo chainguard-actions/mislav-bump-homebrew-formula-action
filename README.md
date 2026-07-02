@@ -12,6 +12,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v3.4 | [`v3.4`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.4) | [`8e2baa4`](https://github.com/mislav/bump-homebrew-formula-action/commit/8e2baa47daaa8db10fcdeb04105dfa6850eb0d68) |
 | v3.5 | [`v3.5`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.5) | [`37c544f`](https://github.com/mislav/bump-homebrew-formula-action/commit/37c544ffe02cc3f4eb1987db8fa63c96e0b37098) |
 | v3.6 | [`v3.6`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v3.6) | [`56a283f`](https://github.com/mislav/bump-homebrew-formula-action/commit/56a283fa15557e9abaa4bdb63b8212abc68e655c) |
+| v4.1 | [`v4.1`](https://github.com/chainguard-actions/mislav-bump-homebrew-formula-action/tree/v4.1) | [`ccf2332`](https://github.com/mislav/bump-homebrew-formula-action/commit/ccf2332299a883f6af50a1d2d41e5df7904dd769) |
 
 ## Privacy
 
