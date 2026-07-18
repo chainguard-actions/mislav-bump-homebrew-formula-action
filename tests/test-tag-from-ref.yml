@@ -1,11 +1,11 @@
-name: Test basic usage - tag push context
+name: Test tag derived from GITHUB_REF
 on:
   workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      GITHUB_REF: refs/tags/v1.2.3
+      GITHUB_REF: refs/tags/v2.0.0
       GITHUB_EVENT_NAME: push
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -17,19 +17,17 @@ jobs:
           GITHUB_TOKEN: fake-token-for-testing
         with:
           formula-name: myformula
-          tag-name: v1.2.3
-          download-url: https://github.com/example/myformula/archive/refs/tags/v1.2.3.tar.gz
-          download-sha256: abc123def456abc123def456abc123def456abc123def456abc123def456abc123
+          download-url: https://github.com/example/myformula/archive/refs/tags/v2.0.0.tar.gz
+          download-sha256: deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef
           homebrew-tap: example/homebrew-tap
 
-      - name: Assert action ran (expected to fail due to fake credentials)
+      - name: Assert action ran with tag derived from GITHUB_REF
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
           echo "action outcome: $OUTCOME"
-          # The action should either succeed or fail with an API/auth error,
-          # not a configuration/setup error. Either outcome is acceptable here
-          # since we are using fake credentials.
+          # The action should run (and fail due to fake credentials),
+          # not crash due to missing tag-name input since it reads from GITHUB_REF.
           if [ "$OUTCOME" = "success" ] || [ "$OUTCOME" = "failure" ]; then
             echo "PASS: action ran to completion (outcome=$OUTCOME)"
           else
