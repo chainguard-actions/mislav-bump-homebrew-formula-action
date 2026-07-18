@@ -1,0 +1,33 @@
+name: Test invalid ref error
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_REF: refs/heads/main
+      GITHUB_EVENT_NAME: push
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          formula-name: my-formula
+          homebrew-tap: Homebrew/homebrew-core
+          # No tag-name provided; GITHUB_REF is a branch ref, not a tag ref
+          # The action should throw "invalid ref: refs/heads/main"
+        env:
+          COMMITTER_TOKEN: fake-token-for-testing
+
+      - name: Assert action failed with invalid ref error
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          if [ "$OUTCOME" != "failure" ]; then
+            echo "FAIL: expected action to fail due to invalid ref, but outcome was '$OUTCOME'"
+            exit 1
+          fi
+          echo "PASS: action correctly failed when ref is not a tag ref"

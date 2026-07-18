@@ -8,7 +8,42 @@
 
 **Test Policy SHA:** `843adf9e4b8f85d0c08b27b9d0b09dd094b54702`
 
-**Harden Agent Version:** `1`
+**Harden Agent Version:** `2`
 
-Action **mislav--bump-homebrew-formula-action/v4.1** was hardened automatically. 0 finding(s) were identified and resolved across 0 iteration(s).
+Action **mislav--bump-homebrew-formula-action/v4.1** was hardened automatically. 2 finding(s) were identified and resolved across 1 iteration(s).
+
+## Findings Fixed
+
+### unpinned-uses (severity: high)
+
+Both workflow files reference GitHub Actions using mutable version tags (@v6) instead of pinned 40-character commit SHAs. This exposes the workflow to supply-chain attacks if the tag is moved to a malicious commit. Affected references: `actions/checkout@v6` and `actions/setup-node@v6` in both files.
+
+Locations:
+
+- `.github/workflows/integration.yml:18`
+- `.github/workflows/integration.yml:20`
+- `.github/workflows/test.yml:10`
+- `.github/workflows/test.yml:12`
+
+### missing-permissions (severity: medium)
+
+Neither workflow file declares a top-level `permissions:` block, and no job within them declares job-level permissions. Without explicit permissions, workflows run with the repository's default token permissions, which may be overly broad (e.g., write access to contents, pull-requests, etc.).
+
+Locations:
+
+- `.github/workflows/integration.yml:1`
+- `.github/workflows/test.yml:1`
+
+## Iteration Notes
+
+### Iteration 1
+
+**Fixes applied:** unpinned-uses, missing-permissions
+
+**Notes:**
+
+Fixed both workflow files (.github/workflows/integration.yml and .github/workflows/test.yml):
+1. Pinned `actions/checkout@v6` to `actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6`
+2. Pinned `actions/setup-node@v6` to `actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6`
+3. Added `permissions: {}` top-level block to both workflow files to enforce least-privilege token access.
 

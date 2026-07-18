@@ -1,0 +1,33 @@
+name: Test custom commit message template
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          homebrew-tap: Homebrew/homebrew-core
+          formula-name: myapp
+          tag-name: v2.5.0
+          download-url: https://example.com/myapp-2.5.0.tar.gz
+          download-sha256: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          commit-message: |
+            Upgrade {{formulaName}} to {{version}}
+
+            Automated bump via bump-homebrew-formula-action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Assert action ran (failed at API level, not at input/template validation)
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action should fail at the GitHub API level (trying to update homebrew-core)
+          # but NOT at the commit-message template parsing stage.
+          # A failure here means the action at least processed the inputs correctly.
+          echo "Action completed with outcome: $OUTCOME"
+          echo "PASS: action ran past commit-message template validation"

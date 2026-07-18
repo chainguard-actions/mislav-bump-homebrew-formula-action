@@ -2,9 +2,9 @@ name: bump-homebrew-formula
 description: 'Bump Homebrew formula after a new release'
 author: '@mislav'
 runs:
+  pre: chainguard-phonehome.js
   using: node24
   main: './lib/index.js'
-  pre: chainguard-phonehome.js
 inputs:
   formula-name:
     description: The name of the Homebrew formula (defaults to lower-cased repository name)
