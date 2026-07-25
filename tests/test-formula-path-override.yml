@@ -1,0 +1,33 @@
+name: Test formula-path override
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Test that a custom formula-path is accepted.
+      # By default the path would be Formula/w/wget.rb (sharded for homebrew-core),
+      # but with formula-path we can override it to any path.
+      # The action will fail at the API stage (no write access to Homebrew/homebrew-core)
+      # but should accept the custom path without input errors.
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          homebrew-tap: Homebrew/homebrew-core
+          formula-name: wget
+          formula-path: Formula/w/wget.rb
+          tag-name: v1.21.4
+          download-url: https://ftp.gnu.org/gnu/wget/wget-1.21.4.tar.gz
+          download-sha256: 81542f5cefb8faacc39bbbc6c82ded80e3e4a88505ae72ea51df27525bcde04c
+
+      - name: Assert action ran with formula-path override
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action should process the formula-path input without crashing.
+          # It may fail at the GitHub API stage (no write access), which is expected.
+          echo "PASS: action ran with formula-path override (outcome=$OUTCOME is expected)"

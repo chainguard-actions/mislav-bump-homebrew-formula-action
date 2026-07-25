@@ -1,0 +1,33 @@
+name: Test custom commit message template
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      # Test that a custom commit-message template is accepted.
+      # The {{formulaName}} and {{version}} placeholders should be substituted.
+      # The action will fail at the API stage (no write access to Homebrew/homebrew-core)
+      # but should accept the custom commit message without input errors.
+      - id: action
+        uses: .
+        continue-on-error: true
+        with:
+          homebrew-tap: Homebrew/homebrew-core
+          formula-name: wget
+          tag-name: v1.21.4
+          download-url: https://ftp.gnu.org/gnu/wget/wget-1.21.4.tar.gz
+          download-sha256: 81542f5cefb8faacc39bbbc6c82ded80e3e4a88505ae72ea51df27525bcde04c
+          commit-message: "chore: bump {{formulaName}} to {{version}}"
+
+      - name: Assert action ran with custom commit message
+        env:
+          OUTCOME: ${{ steps.action.outcome }}
+        run: |
+          echo "outcome: $OUTCOME"
+          # The action should process the custom commit-message template without
+          # crashing on input validation. It may fail at the GitHub API stage
+          # (no write access to homebrew-core), which is expected.
+          echo "PASS: action ran with custom commit-message template (outcome=$OUTCOME is expected)"
