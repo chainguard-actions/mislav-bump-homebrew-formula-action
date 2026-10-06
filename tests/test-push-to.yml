@@ -10,13 +10,13 @@ jobs:
         uses: .
         continue-on-error: true
         with:
-          formula-name: mytool
+          formula-name: myformula
           tag-name: v1.0.0
-          download-url: https://github.com/example/mytool/archive/v1.0.0.tar.gz
-          download-sha256: abc123def456abc123def456abc123def456abc123def456abc123def456abc1
+          download-url: https://github.com/example/myformula/archive/v1.0.0.tar.gz
+          download-sha256: abc123def456abc123def456abc123def456abc123def456abc123def456abc123
           homebrew-tap: Homebrew/homebrew-core
-          push-to: myuser/homebrew-core-fork
-      - name: Assert action ran (push-to input exercised)
+          push-to: myuser/homebrew-core
+      - name: Assert action ran (push-to input accepted, or failed gracefully on sentinel repo)
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
