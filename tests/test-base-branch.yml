@@ -1,4 +1,4 @@
-name: Test basic usage with explicit inputs
+name: Test base-branch input
 on:
   workflow_dispatch:
 jobs:
@@ -6,21 +6,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
       - id: action
         uses: .
         continue-on-error: true
         with:
-          formula-name: myformula
+          formula-name: mytool
           tag-name: v1.0.0
-          download-url: https://github.com/example/myformula/archive/refs/tags/v1.0.0.tar.gz
+          download-url: https://github.com/example/mytool/archive/v1.0.0.tar.gz
+          download-sha256: abc123def456abc123def456abc123def456abc123def456abc123def456abc1
           homebrew-tap: Homebrew/homebrew-core
-          commit-message: |
-            myformula 1.0.0
-
-            Created by https://github.com/mislav/bump-homebrew-formula-action
-
-      - name: Assert action ran and failed gracefully (sentinel repo / API limits)
+          base-branch: master
+      - name: Assert action ran (base-branch input exercised)
         env:
           OUTCOME: ${{ steps.action.outcome }}
         run: |
@@ -28,7 +24,7 @@ jobs:
           if [ "$OUTCOME" = "success" ]; then
             echo "PASS: action succeeded"
           elif [ "$OUTCOME" = "failure" ]; then
-            echo "PASS: action failed gracefully (expected under harness — sentinel repo or API limits)"
+            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
           else
             echo "FAIL: unexpected outcome '$OUTCOME'"
             exit 1

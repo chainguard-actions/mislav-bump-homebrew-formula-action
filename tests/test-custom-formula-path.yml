@@ -1,4 +1,4 @@
-name: Test basic usage with explicit inputs
+name: Test with custom formula path and no pull request
 on:
   workflow_dispatch:
 jobs:
@@ -12,13 +12,12 @@ jobs:
         continue-on-error: true
         with:
           formula-name: myformula
-          tag-name: v1.0.0
-          download-url: https://github.com/example/myformula/archive/refs/tags/v1.0.0.tar.gz
+          formula-path: Formula/myformula.rb
+          tag-name: v1.2.3
+          download-url: https://github.com/example/myformula/archive/refs/tags/v1.2.3.tar.gz
+          download-sha256: deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef
           homebrew-tap: Homebrew/homebrew-core
-          commit-message: |
-            myformula 1.0.0
-
-            Created by https://github.com/mislav/bump-homebrew-formula-action
+          create-pullrequest: "false"
 
       - name: Assert action ran and failed gracefully (sentinel repo / API limits)
         env:
