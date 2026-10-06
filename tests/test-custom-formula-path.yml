@@ -1,4 +1,4 @@
-name: Test basic usage
+name: Test custom formula path and sha256
 on:
   workflow_dispatch:
 jobs:
@@ -12,13 +12,12 @@ jobs:
         continue-on-error: true
         with:
           formula-name: myformula
-          tag-name: v1.0.0
-          download-url: https://github.com/example/myformula/archive/refs/tags/v1.0.0.tar.gz
+          formula-path: Formula/myformula.rb
+          tag-name: v2.0.0
+          download-url: https://github.com/example/myformula/archive/refs/tags/v2.0.0.tar.gz
+          download-sha256: abc123def456abc123def456abc123def456abc123def456abc123def456abc1
           homebrew-tap: Homebrew/homebrew-core
-          commit-message: |
-            myformula 1.0.0
-
-            Created by https://github.com/mislav/bump-homebrew-formula-action
+          base-branch: master
 
       - name: Assert action ran (succeeded or failed gracefully on sentinel repo)
         env:

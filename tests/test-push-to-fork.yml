@@ -1,4 +1,4 @@
-name: Test basic usage
+name: Test push-to fork with no pull request
 on:
   workflow_dispatch:
 jobs:
@@ -12,13 +12,12 @@ jobs:
         continue-on-error: true
         with:
           formula-name: myformula
-          tag-name: v1.0.0
-          download-url: https://github.com/example/myformula/archive/refs/tags/v1.0.0.tar.gz
+          tag-name: v3.0.0
+          download-url: https://github.com/example/myformula/archive/refs/tags/v3.0.0.tar.gz
           homebrew-tap: Homebrew/homebrew-core
-          commit-message: |
-            myformula 1.0.0
-
-            Created by https://github.com/mislav/bump-homebrew-formula-action
+          push-to: myuser/homebrew-core
+          create-pullrequest: "false"
+          create-branch: "false"
 
       - name: Assert action ran (succeeded or failed gracefully on sentinel repo)
         env:
@@ -28,7 +27,7 @@ jobs:
           if [ "$OUTCOME" = "success" ]; then
             echo "PASS: action succeeded"
           elif [ "$OUTCOME" = "failure" ]; then
-            echo "PASS: action failed gracefully (sentinel repo is not resolvable)"
+            echo "PASS: action failed gracefully (sentinel repo or tap not resolvable)"
           else
             echo "FAIL: unexpected outcome '$OUTCOME'"
             exit 1
